@@ -12,12 +12,14 @@ import { BASE_URL } from './DeckOfCardsApp';
  * state: 
  *  - cardsDrawn: array of cards that have been drawn 
  *  [ {image, value, suit, code }, ... ]
- *  - numOfCards - number of cards drawn
+ * - shouldDraw: true/false
+ * 
  * 
  * App -> DeckOfCardsApp -> DeckOfCards -> Card
 */
 
 function DeckOfCards({ deckId }) {
+
   const [cardsDrawn, setCardsDrawn] = useState([]);
   const [shouldDraw, setShouldDraw] = useState(false);
   console.log('DeckOfCards top, state cardsDrawn:', cardsDrawn);
@@ -39,7 +41,7 @@ function DeckOfCards({ deckId }) {
 
     if(shouldDraw) draw();
 
-  }, [shouldDraw]);
+  }, [shouldDraw, deckId]);
 
   const cards = cardsDrawn.map( card => <Card key={card.code} card={card} />);
 

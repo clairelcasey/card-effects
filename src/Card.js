@@ -12,8 +12,9 @@ import "./Card.css"
 
 function Card({ card }) {
   return (
-    <div className="card" >
-      <img src={card.image} />
+    <div className="Card" >
+      
+      <img src={card.image} alt={card.code} />
     </div>
   )
 }

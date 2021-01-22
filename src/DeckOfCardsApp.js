@@ -8,6 +8,7 @@ const BASE_URL = "https://deckofcardsapi.com/api/deck/";
  * 
  * State:
  *  - deck ID - passed to DeckOfCards as prop
+ *  - isLoading - true/false
  * 
  * Props:
  *  - none
