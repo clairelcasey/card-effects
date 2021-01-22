@@ -13,35 +13,40 @@ import { BASE_URL } from './DeckOfCardsApp';
  *  - cardsDrawn: array of cards that have been drawn 
  *  [ {image, value, suit, code }, ... ]
  *  - numOfCards - number of cards drawn
+ * 
+ * App -> DeckOfCardsApp -> DeckOfCards -> Card
 */
 
 function DeckOfCards({ deckId }) {
   const [cardsDrawn, setCardsDrawn] = useState([]);
-  const [drawingCard, setDrawingCard] = useState(false);
+  const [shouldDraw, setShouldDraw] = useState(false);
   console.log('DeckOfCards top, state cardsDrawn:', cardsDrawn);
 
   function handleClick() {
-    setDrawingCard(!drawingCard);
+    setShouldDraw(true);
   }
 
   useEffect(function drawNewCard() {
-    if (numOfCards < 1 || numOfCards > 52) return;
+
     async function draw() {
       const cardResult = await axios.get(`${BASE_URL}${deckId}/draw/?count=1`);
       console.log('effect draw(), cardResult:', cardResult);
 
-      const newCard = cardResult.data.cards;
-      setCardsDrawn(cards => [...cardsDrawn, newCard]);
+      const newCard = cardResult.data.cards[0];
+      setCardsDrawn(cardsDrawn => [...cardsDrawn, newCard]);
+      setShouldDraw(false);
     }
-  }, [drawingCard]);
 
-  const cards = cardsDrawn.map( card => <Card card={card} />);
+    if(shouldDraw) draw();
+
+  }, [shouldDraw]);
+
+  const cards = cardsDrawn.map( card => <Card key={card.code} card={card} />);
 
   return (
     <div className="DeckOfCards" >
-      {cards}
       {(cardsDrawn.length < 52) && <button onClick={handleClick}>Add a card!</button>}
-
+      {cards}
     </div>
   )
 }
